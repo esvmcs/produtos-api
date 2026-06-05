@@ -1,12 +1,18 @@
-﻿using Pyferium.Aplicacao.Produtos.Requests;
+﻿using Pyferium.Aplicacao.Categorias.Repositorios;
+using Pyferium.Aplicacao.Produtos.Excecoes;
+using Pyferium.Aplicacao.Produtos.Repositorios;
+using Pyferium.Aplicacao.Produtos.Requests;
 using Pyferium.Aplicacao.Produtos.Responses;
 using Pyferium.Aplicacao.Produtos.Servicos.Interfaces;
-using Pyferium.Infraestrutura.Repositorios.Interfaces;
 
 namespace Pyferium.Aplicacao.Produtos.Servicos;
 
 public class EditarProdutoService : IEditarProdutoService
 {
+    private const int TamanhoMaximoNomeProduto = 80;
+    private const string ProdutoAtivo = "S";
+    private const string ProdutoInativo = "N";
+
     private readonly ICategoriaRepositorio _categoriaRepositorio;
     private readonly IProdutoRepositorio _produtoRepositorio;
 
@@ -18,11 +24,51 @@ public class EditarProdutoService : IEditarProdutoService
         _produtoRepositorio = produtoRepositorio;
     }
 
-    public async Task<ProdutoEditadoResponse> AtualizarProdutoAsync(int codigoProduto, EditarProdutoRequest request)
+    public async Task<ProdutoEditadoResponse> AtualizarProdutoAsync(
+        int codigoProduto,
+        ProdutoRequest request)
+    {
+        ValidarCodigoProduto(codigoProduto);
+        ValidarRequest(request);
+
+        var produtoAtual = await _produtoRepositorio.ListarPorCodigoAsync(codigoProduto);
+
+        if (produtoAtual is null)
+            throw new ProdutoNaoEncontradoException(codigoProduto);
+
+        var requestNormalizado = NormalizarRequest(request);
+
+        ValidarNomeProduto(requestNormalizado.NomeProduto);
+        ValidarValorProduto(requestNormalizado.ValorProduto);
+        ValidarIdtAtivo(requestNormalizado.IdtAtivo);
+
+        if (requestNormalizado.CodigoCategoria.HasValue)
+            await ValidarCategoriaAsync(requestNormalizado.CodigoCategoria.Value);
+
+        await ValidarProdutoDuplicadoAsync(
+            codigoProduto,
+            produtoAtual.NomeProduto,
+            produtoAtual.CodigoCategoria,
+            requestNormalizado);
+
+        var produtoEditado = await _produtoRepositorio.AtualizarProdutoAsync(
+            codigoProduto,
+            requestNormalizado);
+
+        if (produtoEditado is null)
+            throw new ProdutoNaoEncontradoException(codigoProduto);
+
+        return produtoEditado;
+    }
+
+    private static void ValidarCodigoProduto(int codigoProduto)
     {
         if (codigoProduto <= 0)
             throw new ArgumentException("O código do produto deve ser maior que zero.");
+    }
 
+    private static void ValidarRequest(ProdutoRequest request)
+    {
         if (request is null)
             throw new ArgumentException("Os dados do produto são obrigatórios.");
 
@@ -34,52 +80,98 @@ public class EditarProdutoService : IEditarProdutoService
 
         if (nenhumCampoInformado)
             throw new ArgumentException("Informe ao menos um campo para atualização.");
+    }
 
-        if (!string.IsNullOrWhiteSpace(request.NomeProduto))
+    private static ProdutoRequest NormalizarRequest(ProdutoRequest request)
+    {
+        return new ProdutoRequest
         {
-            request.NomeProduto = request.NomeProduto.Trim();
+            NomeProduto = string.IsNullOrWhiteSpace(request.NomeProduto)
+                ? null
+                : request.NomeProduto.Trim(),
 
-            if (request.NomeProduto.Length > 80)
-                throw new ArgumentException("O nome do produto deve conter no máximo 80 caracteres.");
+            CodigoCategoria = request.CodigoCategoria,
 
-            var contemCaracterInvalido = request.NomeProduto.Any(c =>
-                !char.IsLetterOrDigit(c) &&
-                !char.IsWhiteSpace(c) &&
-                c != '-' &&
-                c != '/' &&
-                c != '.');
+            ValorProduto = request.ValorProduto,
 
-            if (contemCaracterInvalido)
-                throw new ArgumentException("O nome do produto contém caracteres inválidos.");
-        }
+            IdtAtivo = string.IsNullOrWhiteSpace(request.IdtAtivo)
+                ? null
+                : request.IdtAtivo.Trim().ToUpper()
+        };
+    }
 
-        if (request.CodigoCategoria.HasValue)
-        {
-            if (request.CodigoCategoria.Value <= 0)
-                throw new ArgumentException("O código da categoria deve ser maior que zero.");
+    private static void ValidarNomeProduto(string? nomeProduto)
+    {
+        if (string.IsNullOrWhiteSpace(nomeProduto))
+            return;
 
-            var categoriaExiste = await _categoriaRepositorio.VerificarExistenciaCategoriaAsync(request.CodigoCategoria.Value);
+        if (nomeProduto.Length > TamanhoMaximoNomeProduto)
+            throw new ArgumentException("O nome do produto deve conter no máximo 80 caracteres.");
 
-            if (!categoriaExiste)
-                throw new ArgumentException($"A categoria {request.CodigoCategoria.Value} não existe ou está inativa.");
-        }
+        var contemCaracterInvalido = nomeProduto.Any(c =>
+            !char.IsLetterOrDigit(c) &&
+            !char.IsWhiteSpace(c) &&
+            c != '-' &&
+            c != '/' &&
+            c != '.');
 
-        if (request.ValorProduto.HasValue && request.ValorProduto.Value < 0)
+        if (contemCaracterInvalido)
+            throw new ArgumentException("O nome do produto contém caracteres inválidos.");
+    }
+
+    private static void ValidarValorProduto(decimal? valorProduto)
+    {
+        if (valorProduto.HasValue && valorProduto.Value < 0)
             throw new ArgumentException("O valor do produto não pode ser negativo.");
+    }
 
-        if (!string.IsNullOrWhiteSpace(request.IdtAtivo))
+    private static void ValidarIdtAtivo(string? idtAtivo)
+    {
+        if (string.IsNullOrWhiteSpace(idtAtivo))
+            return;
+
+        if (idtAtivo != ProdutoAtivo && idtAtivo != ProdutoInativo)
+            throw new ArgumentException("O campo IdtAtivo deve ser 'S' ou 'N'.");
+    }
+
+    private async Task ValidarCategoriaAsync(int codigoCategoria)
+    {
+        if (codigoCategoria <= 0)
+            throw new ArgumentException("O código da categoria deve ser maior que zero.");
+
+        var categoriaExiste = await _categoriaRepositorio
+            .VerificarExistenciaCategoriaAsync(codigoCategoria);
+
+        if (!categoriaExiste)
+            throw new ArgumentException($"A categoria {codigoCategoria} não existe ou está inativa.");
+    }
+
+    private async Task ValidarProdutoDuplicadoAsync(
+        int codigoProduto,
+        string nomeProdutoAtual,
+        int codigoCategoriaAtual,
+        ProdutoRequest request)
+    {
+        var nomeFinal = request.NomeProduto ?? nomeProdutoAtual;
+        var categoriaFinal = request.CodigoCategoria ?? codigoCategoriaAtual;
+
+        var alterouNomeOuCategoria =
+            request.NomeProduto is not null ||
+            request.CodigoCategoria.HasValue;
+
+        if (!alterouNomeOuCategoria)
+            return;
+
+        var produtoJaExiste = await _produtoRepositorio
+            .ExisteProdutoAtivoComMesmoNomeAsync(
+                nomeFinal,
+                categoriaFinal,
+                codigoProdutoIgnorar: codigoProduto);
+
+        if (produtoJaExiste)
         {
-            request.IdtAtivo = request.IdtAtivo.Trim().ToUpper();
-
-            if (request.IdtAtivo != "S" && request.IdtAtivo != "N")
-                throw new ArgumentException("O campo IdtAtivo deve ser 'S' ou 'N'.");
+            throw new ArgumentException(
+                $"Já existe outro produto ativo com o nome '{nomeFinal}' nessa categoria.");
         }
-
-        var produtoEditado = await _produtoRepositorio.AtualizarProdutoAsync(codigoProduto, request);
-
-        if (produtoEditado is null)
-            throw new ArgumentException($"Produto com código {codigoProduto} não foi encontrado.");
-
-        return produtoEditado;
     }
 }

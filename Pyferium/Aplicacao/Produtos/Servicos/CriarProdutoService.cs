@@ -1,8 +1,8 @@
 ﻿using Pyferium.Aplicacao.Produtos.Requests;
 using Pyferium.Aplicacao.Produtos.Responses;
 using Pyferium.Aplicacao.Produtos.Servicos.Interfaces;
-using Pyferium.Dominio.Entidades;
-using Pyferium.Infraestrutura.Repositorios.Interfaces;
+using Pyferium.Aplicacao.Produtos.Repositorios;
+using Pyferium.Aplicacao.Categorias.Repositorios;
 
 namespace Pyferium.Aplicacao.Produtos.Servicos;
 
@@ -21,6 +21,21 @@ public class CriarProdutoService : ICriarProdutoService
 
     public async Task<ProdutoCriadoResponse> CriarProdutoAsync(CriarProdutoRequest request)
     {
+        ValidarRequest(request);
+
+        var nomeProduto = NormalizarNomeProduto(request.NomeProduto);
+
+        await ValidarCategoriaAsync(request.CodigoCategoria);
+        await ValidarProdutoDuplicadoAsync(nomeProduto, request.CodigoCategoria);
+
+        return await _produtoRepositorio.CriarProdutoAsync(
+            nomeProduto,
+            request.CodigoCategoria,
+            request.ValorProduto);
+    }
+
+    private static void ValidarRequest(CriarProdutoRequest request)
+    {
         if (request is null)
             throw new ArgumentException("Os dados do produto são obrigatórios.");
 
@@ -31,21 +46,25 @@ public class CriarProdutoService : ICriarProdutoService
             throw new ArgumentException("O valor do produto não pode ser negativo.");
 
         ValidarNomeProduto(request.NomeProduto);
+    }
 
-        var categoriaExiste = await _categoriaRepositorio.VerificarExistenciaCategoriaAsync(request.CodigoCategoria);
-
-        var produtoJaExiste = await _produtoRepositorio.ExisteProdutoAtivoComMesmoNomeAsync(request.NomeProduto, request.CodigoCategoria);
-
-        if (produtoJaExiste)
-            throw new ArgumentException($"Já existe um produto ativo com o nome '{request.NomeProduto}' nessa categoria.");
+    private async Task ValidarCategoriaAsync(int codigoCategoria)
+    {
+        var categoriaExiste = await _categoriaRepositorio
+            .VerificarExistenciaCategoriaAsync(codigoCategoria);
 
         if (!categoriaExiste)
-            throw new ArgumentException($"A categoria {request.CodigoCategoria} não existe ou está inativa.");
+            throw new ArgumentException($"A categoria {codigoCategoria} não existe ou está inativa.");
+    }
 
-        return await _produtoRepositorio.CriarProdutoAsync(
-            request.NomeProduto,
-            request.CodigoCategoria,
-            request.ValorProduto);
+    private async Task ValidarProdutoDuplicadoAsync(string nomeProduto, int codigoCategoria)
+    {
+        var produtoJaExiste = await _produtoRepositorio
+            .ExisteProdutoAtivoComMesmoNomeAsync(nomeProduto, codigoCategoria);
+
+        if (produtoJaExiste)
+            throw new ArgumentException(
+                $"Já existe um produto ativo com o nome '{nomeProduto}' nessa categoria.");
     }
 
     private static void ValidarNomeProduto(string nomeProduto)
@@ -53,12 +72,12 @@ public class CriarProdutoService : ICriarProdutoService
         if (string.IsNullOrWhiteSpace(nomeProduto))
             throw new ArgumentException("O nome do produto é obrigatório.");
 
-        nomeProduto = nomeProduto.Trim();
+        var nomeNormalizado = NormalizarNomeProduto(nomeProduto);
 
-        if (nomeProduto.Length > 80)
+        if (nomeNormalizado.Length > 80)
             throw new ArgumentException("O nome do produto deve conter no máximo 80 caracteres.");
 
-        var contemCaracterInvalido = nomeProduto.Any(c =>
+        var contemCaracterInvalido = nomeNormalizado.Any(c =>
             !char.IsLetterOrDigit(c) &&
             !char.IsWhiteSpace(c) &&
             c != '-' &&
@@ -67,5 +86,10 @@ public class CriarProdutoService : ICriarProdutoService
 
         if (contemCaracterInvalido)
             throw new ArgumentException("O nome do produto contém caracteres inválidos.");
+    }
+
+    private static string NormalizarNomeProduto(string nomeProduto)
+    {
+        return nomeProduto.Trim();
     }
 }

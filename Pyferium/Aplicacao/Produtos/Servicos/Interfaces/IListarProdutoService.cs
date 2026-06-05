@@ -4,6 +4,6 @@ namespace Pyferium.Aplicacao.Produtos.Servicos.Interfaces;
 
 public interface IListarProdutoService
 {
-    Task<IEnumerable<ProdutoListagemResponse>> ListarProdutosAsync();
-    Task<IEnumerable<ProdutoListagemResponse>> ListarPorCodigoAsync(int codigoProduto);
+    Task<IReadOnlyList<ProdutoListagemResponse>> ListarProdutosAsync();
+    Task<ProdutoListagemResponse> ListarPorCodigoAsync(int codigoProduto);
 }

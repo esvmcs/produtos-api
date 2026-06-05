@@ -1,4 +1,4 @@
-﻿namespace Pyferium.Infraestrutura.Repositorios.Interfaces;
+﻿namespace Pyferium.Aplicacao.Categorias.Repositorios;
 
 public interface ICategoriaRepositorio
 {

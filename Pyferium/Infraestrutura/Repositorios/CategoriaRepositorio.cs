@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using Pyferium.Infraestrutura.Repositorios.Interfaces;
+using Pyferium.Aplicacao.Categorias.Repositorios;
 using NHibernateSession = NHibernate.ISession;
 
 namespace Pyferium.Infraestrutura.Repositorios;

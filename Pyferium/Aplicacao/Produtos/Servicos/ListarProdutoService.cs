@@ -1,6 +1,7 @@
-﻿using Pyferium.Aplicacao.Produtos.Responses;
+﻿using Pyferium.Aplicacao.Produtos.Excecoes;
+using Pyferium.Aplicacao.Produtos.Repositorios;
+using Pyferium.Aplicacao.Produtos.Responses;
 using Pyferium.Aplicacao.Produtos.Servicos.Interfaces;
-using Pyferium.Infraestrutura.Repositorios.Interfaces;
 
 namespace Pyferium.Aplicacao.Produtos.Servicos;
 
@@ -13,23 +14,33 @@ public class ListarProdutoService : IListarProdutoService
         _produtoRepositorio = produtoRepositorio;
     }
 
-    public async Task<IEnumerable<ProdutoListagemResponse>> ListarProdutosAsync()
+    public async Task<IReadOnlyList<ProdutoListagemResponse>> ListarProdutosAsync()
     {
-        return await _produtoRepositorio.ListarProdutosAsync();
+        var produtos = await _produtoRepositorio.ListarProdutosAsync();
+
+        return produtos.ToList();
     }
 
-    public async Task<IEnumerable<ProdutoListagemResponse>> ListarPorCodigoAsync(int codigoProduto)
+    public async Task<ProdutoListagemResponse> ListarPorCodigoAsync(int codigoProduto)
+    {
+        ValidarCodigoProduto(codigoProduto);
+
+        return await ObterProdutoPorCodigoAsync(codigoProduto);
+    }
+
+    private async Task<ProdutoListagemResponse> ObterProdutoPorCodigoAsync(int codigoProduto)
+    {
+        var produto = await _produtoRepositorio.ListarPorCodigoAsync(codigoProduto);
+
+        if (produto is null)
+            throw new ProdutoNaoEncontradoException(codigoProduto);
+
+        return produto;
+    }
+
+    private static void ValidarCodigoProduto(int codigoProduto)
     {
         if (codigoProduto <= 0)
             throw new ArgumentException("O código do produto deve ser maior que zero.");
-
-        var produtos = await _produtoRepositorio.ListarPorCodigoAsync(codigoProduto);
-
-        var listaProdutos = produtos.ToList();
-
-        if (!listaProdutos.Any())
-            throw new ArgumentException("Nenhum produto encontrado com o código fornecido.");
-
-        return listaProdutos;
     }
 }

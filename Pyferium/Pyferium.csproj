@@ -7,7 +7,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Aplicacao\Produtos\DTO\" />
+	  <Compile Remove="Aplicacao\Produtos\DTO\**" />
+	  <Content Remove="Aplicacao\Produtos\DTO\**" />
+	  <EmbeddedResource Remove="Aplicacao\Produtos\DTO\**" />
+	  <None Remove="Aplicacao\Produtos\DTO\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Aplicacao\Categorias\Servicos\" />
+		<Folder Include="Aplicacao\Categorias\Responses\" />
+		<Folder Include="Aplicacao\Categorias\Requests\" />
 		<Folder Include="Dominio\Entidades\" />
 		<Folder Include="Infraestrutura\Dados\" />
 		<Folder Include="Infraestrutura\Mapeamentos\" />

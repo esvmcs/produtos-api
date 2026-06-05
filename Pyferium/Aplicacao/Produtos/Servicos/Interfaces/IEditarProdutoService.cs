@@ -5,5 +5,5 @@ namespace Pyferium.Aplicacao.Produtos.Servicos.Interfaces;
 
 public interface IEditarProdutoService
 {
-    Task<ProdutoEditadoResponse> AtualizarProdutoAsync(int codigoProduto, EditarProdutoRequest request);
+    Task<ProdutoEditadoResponse> AtualizarProdutoAsync(int codigoProduto, ProdutoRequest request);
 }

@@ -1,17 +1,18 @@
-﻿using Dapper;
-using NHibernate;
-using NHibernate.Transform;
+﻿using System.Data;
+using Dapper;
 using Pyferium.Aplicacao.Produtos.Requests;
 using Pyferium.Aplicacao.Produtos.Responses;
-using Pyferium.Dominio.Entidades;
-using Pyferium.Infraestrutura.Repositorios.Interfaces;
-using System.Data;
+using Pyferium.Aplicacao.Produtos.Repositorios;
+
 using NHibernateSession = NHibernate.ISession;
 
 namespace Pyferium.Infraestrutura.Repositorios;
 
 public class ProdutoRepositorio : IProdutoRepositorio
 {
+    private const string ProdutoAtivo = "S";
+    private const string ProdutoInativo = "N";
+
     private readonly NHibernateSession _session;
 
     public ProdutoRepositorio(NHibernateSession session)
@@ -19,7 +20,12 @@ public class ProdutoRepositorio : IProdutoRepositorio
         _session = session;
     }
 
-    public async Task<ProdutoCriadoResponse> CriarProdutoAsync(string nomeProduto, int codigoCategoria, decimal valorProduto)
+    private IDbConnection Connection => _session.Connection;
+
+    public async Task<ProdutoCriadoResponse> CriarProdutoAsync(
+        string nomeProduto,
+        int codigoCategoria,
+        decimal valorProduto)
     {
         const string sql = @"
             INSERT INTO GEN_PRODUTO 
@@ -40,14 +46,14 @@ public class ProdutoRepositorio : IProdutoRepositorio
             SELECT LAST_INSERT_ID();
         ";
 
-        var codigoProduto = await _session.Connection.QuerySingleAsync<int>(
+        var codigoProduto = await Connection.QuerySingleAsync<int>(
             sql,
             new
             {
                 nomeProduto,
                 codigoCategoria,
                 valorProduto,
-                idtAtivo = "S"
+                idtAtivo = ProdutoAtivo
             });
 
         return new ProdutoCriadoResponse
@@ -56,50 +62,71 @@ public class ProdutoRepositorio : IProdutoRepositorio
             NomeProduto = nomeProduto,
             CodigoCategoria = codigoCategoria,
             ValorProduto = valorProduto,
-            IdtAtivo = "S"
+            IdtAtivo = ProdutoAtivo
         };
     }
-    public async Task<ProdutoEditadoResponse?> AtualizarProdutoAsync(int codigoProduto, EditarProdutoRequest request)
+
+    public async Task<ProdutoEditadoResponse?> AtualizarProdutoAsync(
+        int codigoProduto,
+        ProdutoRequest request)
     {
-        var parameters = new DynamicParameters();
-
         const string sqlUpdate = @"
-        UPDATE GEN_PRODUTO
-        SET 
-            NOMPRODUTO = COALESCE(@nomeProduto, NOMPRODUTO),
-            CODCATEGORIA = COALESCE(@codigoCategoria, CODCATEGORIA),
-            VLRPRODUTO = COALESCE(@valorProduto, VLRPRODUTO),
-            IDTATIVO = COALESCE(@idtAtivo, IDTATIVO)
-        WHERE CODPRODUTO = @codigoProduto;
-    ";
+            UPDATE GEN_PRODUTO
+            SET 
+                NOMPRODUTO = COALESCE(@nomeProduto, NOMPRODUTO),
+                CODCATEGORIA = COALESCE(@codigoCategoria, CODCATEGORIA),
+                VLRPRODUTO = COALESCE(@valorProduto, VLRPRODUTO),
+                IDTATIVO = COALESCE(@idtAtivo, IDTATIVO)
+            WHERE CODPRODUTO = @codigoProduto;
+        ";
 
-        parameters.Add("codigoProduto", codigoProduto, DbType.Int32);
-        parameters.Add("nomeProduto", request.NomeProduto, DbType.String);
-        parameters.Add("codigoCategoria", request.CodigoCategoria, DbType.Int32);
-        parameters.Add("valorProduto", request.ValorProduto, DbType.Decimal);
-        parameters.Add("idtAtivo", request.IdtAtivo, DbType.String);
-
-        var linhasAfetadas = await _session.Connection.ExecuteAsync(sqlUpdate, parameters);
+        var linhasAfetadas = await Connection.ExecuteAsync(
+            sqlUpdate,
+            new
+            {
+                codigoProduto,
+                nomeProduto = request.NomeProduto,
+                codigoCategoria = request.CodigoCategoria,
+                valorProduto = request.ValorProduto,
+                idtAtivo = request.IdtAtivo
+            });
 
         if (linhasAfetadas == 0)
             return null;
 
-        const string sqlSelect = @"
+        return await ListarProdutoEditadoAsync(codigoProduto);
+    }
+
+    public async Task<IReadOnlyList<ProdutoListagemResponse>> ListarProdutosAsync()
+    {
+        const string sql = @"
         SELECT 
-            CODPRODUTO AS CodigoProduto,
-            NOMPRODUTO AS NomeProduto,
-            CODCATEGORIA AS CodigoCategoria,
-            VLRPRODUTO AS ValorProduto,
-            IDTATIVO AS IdtAtivo
-        FROM GEN_PRODUTO
-        WHERE CODPRODUTO = @codigoProduto;
+            P.CODPRODUTO AS CodigoProduto,
+            P.NOMPRODUTO AS NomeProduto,
+            P.VLRPRODUTO AS ValorProduto,
+            C.CODCATEGORIA AS CodigoCategoria,
+            C.DSCCATEGORIA AS DescricaoCategoria,
+            C.CODNIVEL AS CodigoNivel,
+            P.IDTATIVO AS IdtAtivo
+        FROM GEN_PRODUTO P
+        INNER JOIN GEN_CATEGORIA C 
+            ON C.CODCATEGORIA = P.CODCATEGORIA
+        WHERE P.IDTATIVO = @idtAtivo
+          AND C.IDTATIVO = @idtAtivo
+        ORDER BY P.CODPRODUTO;
     ";
 
-        return await _session.Connection.QuerySingleOrDefaultAsync<ProdutoEditadoResponse>(
-            sqlSelect,
-            new { codigoProduto });
+        var produtos = await Connection.QueryAsync<ProdutoListagemResponse>(
+            sql,
+            new
+            {
+                idtAtivo = "S"
+            });
+
+        return produtos.ToList();
     }
-    public async Task<IEnumerable<ProdutoListagemResponse>> ListarProdutosAsync()
+
+    public async Task<ProdutoListagemResponse?> ListarPorCodigoAsync(int codigoProduto)
     {
         const string sql = @"
             SELECT 
@@ -108,81 +135,88 @@ public class ProdutoRepositorio : IProdutoRepositorio
                 P.VLRPRODUTO AS ValorProduto,
                 C.CODCATEGORIA AS CodigoCategoria,
                 C.DSCCATEGORIA AS DescricaoCategoria,
-                C.CODNIVEL AS CodigoNivel
+                C.CODNIVEL AS CodigoNivel,
+                P.IDTATIVO AS IdtAtivo
             FROM GEN_PRODUTO P
             INNER JOIN GEN_CATEGORIA C 
                 ON C.CODCATEGORIA = P.CODCATEGORIA
-            WHERE P.IDTATIVO = :idtAtivo
-              AND C.IDTATIVO = :idtAtivo
-            ORDER BY P.CODPRODUTO;
+            WHERE P.CODPRODUTO = @codigoProduto;
         ";
 
-        var produtos = await _session
-            .CreateSQLQuery(sql)
-            .AddScalar("CodigoProduto", NHibernateUtil.Int32)
-            .AddScalar("NomeProduto", NHibernateUtil.String)
-            .AddScalar("ValorProduto", NHibernateUtil.Decimal)
-            .AddScalar("CodigoCategoria", NHibernateUtil.Int32)
-            .AddScalar("DescricaoCategoria", NHibernateUtil.String)
-            .AddScalar("CodigoNivel", NHibernateUtil.String)
-            .SetParameter("idtAtivo", "S")
-            .SetResultTransformer(Transformers.AliasToBean<ProdutoListagemResponse>())
-            .ListAsync<ProdutoListagemResponse>();
-
-        return produtos;
+        return await Connection.QuerySingleOrDefaultAsync<ProdutoListagemResponse>(
+            sql,
+            new
+            {
+                codigoProduto
+            });
     }
-    public async Task<IEnumerable<ProdutoListagemResponse>> ListarPorCodigoAsync(int codigoProduto)
+
+    public async Task<bool> ExisteProdutoAtivoComMesmoNomeAsync(
+        string nomeProduto,
+        int codigoCategoria,
+        int? codigoProdutoIgnorar = null)
     {
         const string sql = @"
-            SELECT 
-                P.CODPRODUTO AS CodigoProduto,
-                P.NOMPRODUTO AS NomeProduto,
-                P.VLRPRODUTO AS ValorProduto,
-                C.CODCATEGORIA AS CodigoCategoria,
-                C.DSCCATEGORIA AS DescricaoCategoria,
-                C.CODNIVEL AS CodigoNivel
-            FROM GEN_PRODUTO P
-            INNER JOIN GEN_CATEGORIA C 
-                ON C.CODCATEGORIA = P.CODCATEGORIA
-            WHERE P.IDTATIVO = :idtAtivo
-              AND C.IDTATIVO = :idtAtivo
-              AND P.CODPRODUTO = :codigoProduto
-            ORDER BY P.CODPRODUTO;
+            SELECT COUNT(1)
+            FROM GEN_PRODUTO
+            WHERE UPPER(TRIM(NOMPRODUTO)) = UPPER(TRIM(@nomeProduto))
+              AND CODCATEGORIA = @codigoCategoria
+              AND IDTATIVO = @idtAtivo
+              AND (@codigoProdutoIgnorar IS NULL OR CODPRODUTO <> @codigoProdutoIgnorar);
         ";
-        var produtos = await _session
-            .CreateSQLQuery(sql)
-            .AddScalar("CodigoProduto", NHibernateUtil.Int32)
-            .AddScalar("NomeProduto", NHibernateUtil.String)
-            .AddScalar("ValorProduto", NHibernateUtil.Decimal)
-            .AddScalar("CodigoCategoria", NHibernateUtil.Int32)
-            .AddScalar("DescricaoCategoria", NHibernateUtil.String)
-            .AddScalar("CodigoNivel", NHibernateUtil.String)
-            .SetParameter("idtAtivo", "S")
-            .SetParameter("codigoProduto", codigoProduto)
-            .SetResultTransformer(Transformers.AliasToBean<ProdutoListagemResponse>())
-            .ListAsync<ProdutoListagemResponse>();
-        return produtos;
-    }
-    public async Task<bool> ExisteProdutoAtivoComMesmoNomeAsync(string nomeProduto, int codigoCategoria, int? codigoProdutoIgnorar = null)
-    {
-        const string sql = @"
-        SELECT COUNT(1)
-        FROM GEN_PRODUTO
-        WHERE UPPER(TRIM(NOMPRODUTO)) = UPPER(TRIM(@nomeProduto))
-          AND CODCATEGORIA = @codigoCategoria
-          AND IDTATIVO = 'S'
-          AND (@codigoProdutoIgnorar IS NULL OR CODPRODUTO <> @codigoProdutoIgnorar);
-    ";
 
-        var total = await _session.Connection.QuerySingleAsync<int>(
+        var total = await Connection.QuerySingleAsync<int>(
             sql,
             new
             {
                 nomeProduto,
                 codigoCategoria,
-                codigoProdutoIgnorar
+                codigoProdutoIgnorar,
+                idtAtivo = ProdutoAtivo
             });
 
         return total > 0;
+    }
+
+    public async Task<bool> DeletarProdutoAsync(int codigoProduto)
+    {
+        const string sql = @"
+            UPDATE GEN_PRODUTO
+            SET IDTATIVO = @idtAtivo
+            WHERE CODPRODUTO = @codigoProduto
+              AND IDTATIVO = @produtoAtivo;
+        ";
+
+        var linhasAfetadas = await Connection.ExecuteAsync(
+            sql,
+            new
+            {
+                codigoProduto,
+                idtAtivo = ProdutoInativo,
+                produtoAtivo = ProdutoAtivo
+            });
+
+        return linhasAfetadas > 0;
+    }
+
+    private async Task<ProdutoEditadoResponse?> ListarProdutoEditadoAsync(int codigoProduto)
+    {
+        const string sql = @"
+            SELECT 
+                CODPRODUTO AS CodigoProduto,
+                NOMPRODUTO AS NomeProduto,
+                CODCATEGORIA AS CodigoCategoria,
+                VLRPRODUTO AS ValorProduto,
+                IDTATIVO AS IdtAtivo
+            FROM GEN_PRODUTO
+            WHERE CODPRODUTO = @codigoProduto;
+        ";
+
+        return await Connection.QuerySingleOrDefaultAsync<ProdutoEditadoResponse>(
+            sql,
+            new
+            {
+                codigoProduto
+            });
     }
 }

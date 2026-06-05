@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Pyferium.Aplicacao.Produtos.Excecoes;
 using Pyferium.Aplicacao.Produtos.Requests;
 using Pyferium.Aplicacao.Produtos.Servicos.Interfaces;
 
@@ -12,24 +13,27 @@ public class ProdutosController : ControllerBase
     private readonly IListarProdutoService _listarProdutoService;
     private readonly ICriarProdutoService _criarProdutoService;
     private readonly IEditarProdutoService _editarProdutoService;
+    private readonly IDeletarProdutoService _deletarProdutoService;
 
     public ProdutosController(
         ILogger<ProdutosController> logger,
         IListarProdutoService listarProdutoService,
         ICriarProdutoService criarProdutoService,
-        IEditarProdutoService editarProdutoService)
+        IEditarProdutoService editarProdutoService,
+        IDeletarProdutoService deletarProdutoService)
     {
         _logger = logger;
         _listarProdutoService = listarProdutoService;
         _criarProdutoService = criarProdutoService;
         _editarProdutoService = editarProdutoService;
+        _deletarProdutoService = deletarProdutoService;
     }
 
     [HttpPost]
     public async Task<IActionResult> CriarProdutoAsync([FromBody] CriarProdutoRequest request)
     {
         _logger.LogInformation(
-            "Iniciando a criação de um novo produto com nome: {NomeProduto}.",
+            "Iniciando criação de produto. Nome: {NomeProduto}",
             request?.NomeProduto);
 
         try
@@ -37,7 +41,7 @@ public class ProdutosController : ControllerBase
             var produtoCriado = await _criarProdutoService.CriarProdutoAsync(request);
 
             _logger.LogInformation(
-                "Produto criado com sucesso. Código do produto: {CodigoProduto}.",
+                "Produto criado com sucesso. Código: {CodigoProduto}",
                 produtoCriado.CodigoProduto);
 
             return CreatedAtRoute(
@@ -48,7 +52,7 @@ public class ProdutosController : ControllerBase
         catch (ArgumentException ex)
         {
             _logger.LogWarning(
-                "Erro ao criar produto com nome: {NomeProduto}. Erro: {ErrorMessage}",
+                "Falha ao criar produto. Nome: {NomeProduto}. Erro: {Erro}",
                 request?.NomeProduto,
                 ex.Message);
 
@@ -59,34 +63,41 @@ public class ProdutosController : ControllerBase
         }
     }
 
-    [HttpPut]
-    [Route("{codigoProduto:int}")]
-    public async Task<IActionResult> AtualizarProdutoAsync(int codigoProduto, [FromBody] EditarProdutoRequest request)
+    [HttpPut("{codigoProduto:int}")]
+    public async Task<IActionResult> AtualizarProdutoAsync(
+        int codigoProduto,
+        [FromBody] ProdutoRequest request)
     {
         _logger.LogInformation(
-            "Iniciando a atualização do produto com código: {CodigoProduto}.",
+            "Iniciando atualização de produto. Código: {CodigoProduto}",
             codigoProduto);
 
         try
         {
-            var produtoAtualizado = await _editarProdutoService.AtualizarProdutoAsync(codigoProduto, request);
-
-            if (produtoAtualizado == null)
-                return NotFound(new
-                {
-                    Erro = $"Produto com código {codigoProduto} não encontrado."
-                });
+            var produtoAtualizado = await _editarProdutoService
+                .AtualizarProdutoAsync(codigoProduto, request);
 
             _logger.LogInformation(
-                "Produto atualizado com sucesso. Código do produto: {CodigoProduto}.",
+                "Produto atualizado com sucesso. Código: {CodigoProduto}",
                 produtoAtualizado.CodigoProduto);
 
             return Ok(produtoAtualizado);
         }
+        catch (ProdutoNaoEncontradoException ex)
+        {
+            _logger.LogInformation(
+                "Produto não encontrado para atualização. Código: {CodigoProduto}",
+                codigoProduto);
+
+            return NotFound(new
+            {
+                Erro = ex.Message
+            });
+        }
         catch (ArgumentException ex)
         {
             _logger.LogWarning(
-                "Erro ao atualizar produto com código: {CodigoProduto}. Erro: {ErrorMessage}",
+                "Falha ao atualizar produto. Código: {CodigoProduto}. Erro: {Erro}",
                 codigoProduto,
                 ex.Message);
 
@@ -100,23 +111,22 @@ public class ProdutosController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> ListarProdutosAsync()
     {
-        _logger.LogInformation("Iniciando a listagem de produtos.");
+        _logger.LogInformation("Iniciando listagem de produtos.");
 
         var produtos = await _listarProdutoService.ListarProdutosAsync();
-        var listaProdutos = produtos.ToList();
 
         _logger.LogInformation(
-            "Finalizando a listagem de produtos. Total de produtos encontrados: {TotalProdutos}.",
-            listaProdutos.Count);
+            "Listagem de produtos finalizada. Total: {TotalProdutos}",
+            produtos.Count);
 
-        return Ok(listaProdutos);
+        return Ok(produtos);
     }
 
     [HttpGet("{codigoProduto:int}", Name = "ListarProdutoPorCodigo")]
     public async Task<IActionResult> ListarPorCodigoAsync(int codigoProduto)
     {
         _logger.LogInformation(
-            "Iniciando a busca por produto com código: {CodigoProduto}.",
+            "Iniciando busca de produto. Código: {CodigoProduto}",
             codigoProduto);
 
         try
@@ -124,15 +134,71 @@ public class ProdutosController : ControllerBase
             var produto = await _listarProdutoService.ListarPorCodigoAsync(codigoProduto);
 
             _logger.LogInformation(
-                "Produto encontrado com código: {CodigoProduto}.",
-                codigoProduto);
+                "Produto encontrado. Código: {CodigoProduto}",
+                produto.CodigoProduto);
 
             return Ok(produto);
+        }
+        catch (ProdutoNaoEncontradoException ex)
+        {
+            _logger.LogInformation(
+                "Produto não encontrado. Código: {CodigoProduto}",
+                codigoProduto);
+
+            return NotFound(new
+            {
+                Erro = ex.Message
+            });
         }
         catch (ArgumentException ex)
         {
             _logger.LogWarning(
-                "Erro ao buscar produto com código: {CodigoProduto}. Erro: {ErrorMessage}",
+                "Código inválido ao buscar produto. Código: {CodigoProduto}. Erro: {Erro}",
+                codigoProduto,
+                ex.Message);
+
+            return BadRequest(new
+            {
+                Erro = ex.Message
+            });
+        }
+    }
+
+    [HttpDelete("{codigoProduto:int}")]
+    public async Task<IActionResult> DeletarProdutoAsync(int codigoProduto)
+    {
+        _logger.LogInformation(
+            "Iniciando exclusão de produto. Código: {CodigoProduto}",
+            codigoProduto);
+
+        try
+        {
+            await _deletarProdutoService.DeletarProdutoAsync(codigoProduto);
+
+            _logger.LogInformation(
+                "Produto excluído com sucesso. Código: {CodigoProduto}",
+                codigoProduto);
+
+            return Ok(new
+            {
+                Mensagem = $"Produto com código {codigoProduto} excluído com sucesso."
+            });
+        }
+        catch (ProdutoNaoEncontradoException ex)
+        {
+            _logger.LogInformation(
+                "Produto não encontrado para exclusão. Código: {CodigoProduto}",
+                codigoProduto);
+
+            return NotFound(new
+            {
+                Erro = ex.Message
+            });
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(
+                "Falha ao excluir produto. Código: {CodigoProduto}. Erro: {Erro}",
                 codigoProduto,
                 ex.Message);
 
