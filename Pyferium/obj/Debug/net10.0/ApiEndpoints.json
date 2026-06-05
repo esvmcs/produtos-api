@@ -1,0 +1,66 @@
+[
+  {
+    "ContainingType": "Pyferium.Controllers.ProdutosController",
+    "Method": "CriarProdutoAsync",
+    "RelativePath": "api/produtos",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Pyferium.Aplicacao.Produtos.Requests.CriarProdutoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Pyferium.Controllers.ProdutosController",
+    "Method": "ListarProdutosAsync",
+    "RelativePath": "api/produtos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Pyferium.Controllers.ProdutosController",
+    "Method": "AtualizarProdutoAsync",
+    "RelativePath": "api/produtos/{codigoProduto}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "codigoProduto",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Pyferium.Aplicacao.Produtos.Requests.EditarProdutoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Pyferium.Controllers.ProdutosController",
+    "Method": "ListarPorCodigoAsync",
+    "RelativePath": "api/produtos/{codigoProduto}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "codigoProduto",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [],
+    "EndpointName": "ListarProdutoPorCodigo"
+  }
+]

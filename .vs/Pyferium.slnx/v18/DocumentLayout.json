@@ -1,0 +1,173 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|c:\\users\\vinic\\desktop\\vin\u00EDcius\\developer\\c#\\projetos\\pyferium\\pyferium\\aplicacao\\produtos\\servicos\\editarprodutoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|solutionrelative:pyferium\\aplicacao\\produtos\\servicos\\editarprodutoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|c:\\users\\vinic\\desktop\\vin\u00EDcius\\developer\\c#\\projetos\\pyferium\\pyferium\\controllers\\produtoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|solutionrelative:pyferium\\controllers\\produtoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|c:\\users\\vinic\\desktop\\vin\u00EDcius\\developer\\c#\\projetos\\pyferium\\pyferium\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|solutionrelative:pyferium\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|c:\\users\\vinic\\desktop\\vin\u00EDcius\\developer\\c#\\projetos\\pyferium\\pyferium\\aplicacao\\produtos\\servicos\\interfaces\\ieditarprodutoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|solutionrelative:pyferium\\aplicacao\\produtos\\servicos\\interfaces\\ieditarprodutoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|c:\\users\\vinic\\desktop\\vin\u00EDcius\\developer\\c#\\projetos\\pyferium\\pyferium\\aplicacao\\produtos\\servicos\\criarprodutoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|solutionrelative:pyferium\\aplicacao\\produtos\\servicos\\criarprodutoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|c:\\users\\vinic\\desktop\\vin\u00EDcius\\developer\\c#\\projetos\\pyferium\\pyferium\\infraestrutura\\repositorios\\produtorepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|solutionrelative:pyferium\\infraestrutura\\repositorios\\produtorepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|c:\\users\\vinic\\desktop\\vin\u00EDcius\\developer\\c#\\projetos\\pyferium\\pyferium\\infraestrutura\\repositorios\\interfaces\\iprodutorepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|solutionrelative:pyferium\\infraestrutura\\repositorios\\interfaces\\iprodutorepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|c:\\users\\vinic\\desktop\\vin\u00EDcius\\developer\\c#\\projetos\\pyferium\\pyferium\\aplicacao\\produtos\\requests\\editarprodutorequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|solutionrelative:pyferium\\aplicacao\\produtos\\requests\\editarprodutorequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|c:\\users\\vinic\\desktop\\vin\u00EDcius\\developer\\c#\\projetos\\pyferium\\pyferium\\aplicacao\\produtos\\responses\\produtoeditadoresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6BFEED0-6BC5-1F54-6BAB-478AC5C4BF2B}|Pyferium\\Pyferium.csproj|solutionrelative:pyferium\\aplicacao\\produtos\\responses\\produtoeditadoresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ProdutosController.cs",
+              "DocumentMoniker": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Controllers\\ProdutosController.cs",
+              "RelativeDocumentMoniker": "Pyferium\\Controllers\\ProdutosController.cs",
+              "ToolTip": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Controllers\\ProdutosController.cs",
+              "RelativeToolTip": "Pyferium\\Controllers\\ProdutosController.cs",
+              "ViewState": "AgIAADsAAAAAAAAAAAAAAEUAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T04:11:52.681Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Program.cs",
+              "RelativeDocumentMoniker": "Pyferium\\Program.cs",
+              "ToolTip": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Program.cs",
+              "RelativeToolTip": "Pyferium\\Program.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T04:11:46.784Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CriarProdutoService.cs",
+              "DocumentMoniker": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Aplicacao\\Produtos\\Servicos\\CriarProdutoService.cs",
+              "RelativeDocumentMoniker": "Pyferium\\Aplicacao\\Produtos\\Servicos\\CriarProdutoService.cs",
+              "ToolTip": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Aplicacao\\Produtos\\Servicos\\CriarProdutoService.cs",
+              "RelativeToolTip": "Pyferium\\Aplicacao\\Produtos\\Servicos\\CriarProdutoService.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAzwCQAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T04:10:07.04Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EditarProdutoService.cs",
+              "DocumentMoniker": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Aplicacao\\Produtos\\Servicos\\EditarProdutoService.cs",
+              "RelativeDocumentMoniker": "Pyferium\\Aplicacao\\Produtos\\Servicos\\EditarProdutoService.cs",
+              "ToolTip": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Aplicacao\\Produtos\\Servicos\\EditarProdutoService.cs",
+              "RelativeToolTip": "Pyferium\\Aplicacao\\Produtos\\Servicos\\EditarProdutoService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T04:06:54.732Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IEditarProdutoService.cs",
+              "DocumentMoniker": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Aplicacao\\Produtos\\Servicos\\Interfaces\\IEditarProdutoService.cs",
+              "RelativeDocumentMoniker": "Pyferium\\Aplicacao\\Produtos\\Servicos\\Interfaces\\IEditarProdutoService.cs",
+              "ToolTip": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Aplicacao\\Produtos\\Servicos\\Interfaces\\IEditarProdutoService.cs",
+              "RelativeToolTip": "Pyferium\\Aplicacao\\Produtos\\Servicos\\Interfaces\\IEditarProdutoService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAcAAABoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T04:06:53.69Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "EditarProdutoRequest.cs",
+              "DocumentMoniker": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Aplicacao\\Produtos\\Requests\\EditarProdutoRequest.cs",
+              "RelativeDocumentMoniker": "Pyferium\\Aplicacao\\Produtos\\Requests\\EditarProdutoRequest.cs",
+              "ToolTip": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Aplicacao\\Produtos\\Requests\\EditarProdutoRequest.cs",
+              "RelativeToolTip": "Pyferium\\Aplicacao\\Produtos\\Requests\\EditarProdutoRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T04:05:03.907Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ProdutoRepositorio.cs",
+              "DocumentMoniker": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Infraestrutura\\Repositorios\\ProdutoRepositorio.cs",
+              "RelativeDocumentMoniker": "Pyferium\\Infraestrutura\\Repositorios\\ProdutoRepositorio.cs",
+              "ToolTip": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Infraestrutura\\Repositorios\\ProdutoRepositorio.cs",
+              "RelativeToolTip": "Pyferium\\Infraestrutura\\Repositorios\\ProdutoRepositorio.cs",
+              "ViewState": "AgIAAJcAAAAAAAAAAAAQwKUAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T04:04:30.594Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "IProdutoRepositorio.cs",
+              "DocumentMoniker": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Infraestrutura\\Repositorios\\Interfaces\\IProdutoRepositorio.cs",
+              "RelativeDocumentMoniker": "Pyferium\\Infraestrutura\\Repositorios\\Interfaces\\IProdutoRepositorio.cs",
+              "ToolTip": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Infraestrutura\\Repositorios\\Interfaces\\IProdutoRepositorio.cs",
+              "RelativeToolTip": "Pyferium\\Infraestrutura\\Repositorios\\Interfaces\\IProdutoRepositorio.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAmwAsAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T04:05:28.204Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ProdutoEditadoResponse.cs",
+              "DocumentMoniker": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Aplicacao\\Produtos\\Responses\\ProdutoEditadoResponse.cs",
+              "RelativeDocumentMoniker": "Pyferium\\Aplicacao\\Produtos\\Responses\\ProdutoEditadoResponse.cs",
+              "ToolTip": "C:\\Users\\vinic\\Desktop\\Vin\u00EDcius\\Developer\\C#\\projetos\\Pyferium\\Pyferium\\Aplicacao\\Produtos\\Responses\\ProdutoEditadoResponse.cs",
+              "RelativeToolTip": "Pyferium\\Aplicacao\\Produtos\\Responses\\ProdutoEditadoResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T04:04:56.986Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

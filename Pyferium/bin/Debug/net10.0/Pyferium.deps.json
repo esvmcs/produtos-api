@@ -1,0 +1,314 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "Pyferium/1.0.0": {
+        "dependencies": {
+          "Dapper": "2.1.79",
+          "FluentNHibernate": "3.4.1",
+          "Microsoft.AspNetCore.OpenApi": "10.0.8",
+          "NHibernate": "5.6.1",
+          "NHibernate.Driver.MySqlConnector": "2.0.5",
+          "Swashbuckle.AspNetCore": "10.2.1"
+        },
+        "runtime": {
+          "Pyferium.dll": {}
+        }
+      },
+      "Antlr3.Runtime/3.5.1": {
+        "runtime": {
+          "lib/netstandard1.1/Antlr3.Runtime.dll": {
+            "assemblyVersion": "3.5.0.2",
+            "fileVersion": "3.5.1.0"
+          }
+        }
+      },
+      "Dapper/2.1.79": {
+        "runtime": {
+          "lib/net10.0/Dapper.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.1.79.29349"
+          }
+        }
+      },
+      "FluentNHibernate/3.4.1": {
+        "dependencies": {
+          "NHibernate": "5.6.1"
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/FluentNHibernate.dll": {
+            "assemblyVersion": "3.4.0.0",
+            "fileVersion": "3.4.1.0"
+          }
+        }
+      },
+      "Iesi.Collections/4.1.1": {
+        "runtime": {
+          "lib/net8.0/Iesi.Collections.dll": {
+            "assemblyVersion": "4.1.0.0",
+            "fileVersion": "4.1.1.0"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.OpenApi/10.0.8": {
+        "dependencies": {
+          "Microsoft.OpenApi": "2.7.5"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.AspNetCore.OpenApi.dll": {
+            "assemblyVersion": "10.0.8.0",
+            "fileVersion": "10.0.826.23019"
+          }
+        }
+      },
+      "Microsoft.OpenApi/2.7.5": {
+        "runtime": {
+          "lib/net8.0/Microsoft.OpenApi.dll": {
+            "assemblyVersion": "2.7.5.0",
+            "fileVersion": "2.7.5.0"
+          }
+        }
+      },
+      "MySqlConnector/1.0.0": {
+        "runtime": {
+          "lib/net5.0/MySqlConnector.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NHibernate/5.6.1": {
+        "dependencies": {
+          "Antlr3.Runtime": "3.5.1",
+          "Iesi.Collections": "4.1.1",
+          "Remotion.Linq": "2.2.0",
+          "Remotion.Linq.EagerFetching": "2.2.0",
+          "System.Configuration.ConfigurationManager": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/NHibernate.dll": {
+            "assemblyVersion": "5.6.0.0",
+            "fileVersion": "5.6.1.0"
+          }
+        }
+      },
+      "NHibernate.Driver.MySqlConnector/2.0.5": {
+        "dependencies": {
+          "MySqlConnector": "1.0.0",
+          "NHibernate": "5.6.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/NHibernate.Driver.MySqlConnector.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.5.0"
+          }
+        }
+      },
+      "Remotion.Linq/2.2.0": {
+        "runtime": {
+          "lib/netstandard1.0/Remotion.Linq.dll": {
+            "assemblyVersion": "2.2.0.0",
+            "fileVersion": "2.2.0.30000"
+          }
+        }
+      },
+      "Remotion.Linq.EagerFetching/2.2.0": {
+        "dependencies": {
+          "Remotion.Linq": "2.2.0"
+        },
+        "runtime": {
+          "lib/netstandard1.0/Remotion.Linq.EagerFetching.dll": {
+            "assemblyVersion": "2.2.0.0",
+            "fileVersion": "2.2.0.30000"
+          }
+        }
+      },
+      "Swashbuckle.AspNetCore/10.2.1": {
+        "dependencies": {
+          "Swashbuckle.AspNetCore.Swagger": "10.2.1",
+          "Swashbuckle.AspNetCore.SwaggerGen": "10.2.1",
+          "Swashbuckle.AspNetCore.SwaggerUI": "10.2.1"
+        }
+      },
+      "Swashbuckle.AspNetCore.Swagger/10.2.1": {
+        "dependencies": {
+          "Microsoft.OpenApi": "2.7.5"
+        },
+        "runtime": {
+          "lib/net10.0/Swashbuckle.AspNetCore.Swagger.dll": {
+            "assemblyVersion": "10.2.1.0",
+            "fileVersion": "10.2.1.2634"
+          }
+        }
+      },
+      "Swashbuckle.AspNetCore.SwaggerGen/10.2.1": {
+        "dependencies": {
+          "Swashbuckle.AspNetCore.Swagger": "10.2.1"
+        },
+        "runtime": {
+          "lib/net10.0/Swashbuckle.AspNetCore.SwaggerGen.dll": {
+            "assemblyVersion": "10.2.1.0",
+            "fileVersion": "10.2.1.2634"
+          }
+        }
+      },
+      "Swashbuckle.AspNetCore.SwaggerUI/10.2.1": {
+        "runtime": {
+          "lib/net10.0/Swashbuckle.AspNetCore.SwaggerUI.dll": {
+            "assemblyVersion": "10.2.1.0",
+            "fileVersion": "10.2.1.2634"
+          }
+        }
+      },
+      "System.Configuration.ConfigurationManager/8.0.0": {
+        "dependencies": {
+          "System.Security.Cryptography.ProtectedData": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/System.Configuration.ConfigurationManager.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "System.Security.Cryptography.ProtectedData/8.0.0": {
+        "runtime": {
+          "lib/net8.0/System.Security.Cryptography.ProtectedData.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Pyferium/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Antlr3.Runtime/3.5.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ZwCEpLCLZXkjzf1lYEixp9hgVlYYk33ACHn6xjFyVhGRi2BpoYQez0qtatbetdylASWYTG+cGz0CGR4z66JM4w==",
+      "path": "antlr3.runtime/3.5.1",
+      "hashPath": "antlr3.runtime.3.5.1.nupkg.sha512"
+    },
+    "Dapper/2.1.79": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8YijbzgTfmqmQOnVNorYM6K++pxqnW3nJ4aC1sRHzxUA2CcuoJ9gsTem3kgBnPRMc38zZHl4Esb6hAezXIEEuw==",
+      "path": "dapper/2.1.79",
+      "hashPath": "dapper.2.1.79.nupkg.sha512"
+    },
+    "FluentNHibernate/3.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-uPjamAeZEpgD9ITPa40qNIA9GQbdEqCq9OwpNcHAUSSDu6TULDIKYK9BylBgr47mQsR/bInCsMOwbNWn5XKpWA==",
+      "path": "fluentnhibernate/3.4.1",
+      "hashPath": "fluentnhibernate.3.4.1.nupkg.sha512"
+    },
+    "Iesi.Collections/4.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VBrZi6gKjArcyOqrKoZODtd4V9rGqyxkUTwO9Hg/8+idhe/A391X9nRXuESewb7kfCNo5jRwFKLSjrY0j+0PkA==",
+      "path": "iesi.collections/4.1.1",
+      "hashPath": "iesi.collections.4.1.1.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.OpenApi/10.0.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cw24xHE2QaWwyEG9GQwFbjboyabub6Vd80DIItUGENzcQOa/BEnTrXsg2GADqWTmY/3ycqk9ToLGjgvF/VRlGA==",
+      "path": "microsoft.aspnetcore.openapi/10.0.8",
+      "hashPath": "microsoft.aspnetcore.openapi.10.0.8.nupkg.sha512"
+    },
+    "Microsoft.OpenApi/2.7.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0FA67RSnRM4tcBKqiqVu/HPdZ9+QOKbmeRjxRUGTCjPU4C0bmUhd97Dso7Yild5P7nOV6GxJ2xrK0Kv/O9xp0w==",
+      "path": "microsoft.openapi/2.7.5",
+      "hashPath": "microsoft.openapi.2.7.5.nupkg.sha512"
+    },
+    "MySqlConnector/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7meR9elqyw/cF67N19MCKYzZjtyMJBlaCvjOC53XbrRQcvzER1sICpzcHwpsZF7sTxhHDZk6b3J25IOvSJaj6A==",
+      "path": "mysqlconnector/1.0.0",
+      "hashPath": "mysqlconnector.1.0.0.nupkg.sha512"
+    },
+    "NHibernate/5.6.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2tP1sdh3vFobb9yUCs0t5y1A4iXY5HarRZN+bJ8fax6b4Mge2bY1k1LHk3KX4yfRaVoJ70tAy5jkTe5WDEwFQA==",
+      "path": "nhibernate/5.6.1",
+      "hashPath": "nhibernate.5.6.1.nupkg.sha512"
+    },
+    "NHibernate.Driver.MySqlConnector/2.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-mKMKrr0vfj8m1zYiiZH76DRdN3cI/WMD1OCqmm7BHWcL/ofo+928JmTYFRXTD8KSmdol1T76hp+B0PzjVSVd4Q==",
+      "path": "nhibernate.driver.mysqlconnector/2.0.5",
+      "hashPath": "nhibernate.driver.mysqlconnector.2.0.5.nupkg.sha512"
+    },
+    "Remotion.Linq/2.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fK/76UmpC0FXBlGDFVPLJHQlDLYnGC+XY3eoDgCgbtrhi0vzbXDQ3n/IYHhqSKqXQfGw/u04A1drWs7rFVkRjw==",
+      "path": "remotion.linq/2.2.0",
+      "hashPath": "remotion.linq.2.2.0.nupkg.sha512"
+    },
+    "Remotion.Linq.EagerFetching/2.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-d6bkH5kROJPFsdvDy4yQved9I4ickamytPByPyuQcH9dk1ef4jciajo50vTQhheyOHeWOgLh97UvkiHV8QSgeQ==",
+      "path": "remotion.linq.eagerfetching/2.2.0",
+      "hashPath": "remotion.linq.eagerfetching.2.2.0.nupkg.sha512"
+    },
+    "Swashbuckle.AspNetCore/10.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SDU6akgCV/H4jFMRfyJ0mgO5jWOuuAqekvEThXg8c/LjnfNz5Nkaz+RUpeTVJKWIRX4wDKC/6R3ogJ4AsRE32A==",
+      "path": "swashbuckle.aspnetcore/10.2.1",
+      "hashPath": "swashbuckle.aspnetcore.10.2.1.nupkg.sha512"
+    },
+    "Swashbuckle.AspNetCore.Swagger/10.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ej4inPhiWCq+0utG8yaKhIhE8M3k3R/qRaGhpgDZB+O/s+o62/zRMO1Cn2CtQccsrqPE9PYnzCp6hQGYGpJOyQ==",
+      "path": "swashbuckle.aspnetcore.swagger/10.2.1",
+      "hashPath": "swashbuckle.aspnetcore.swagger.10.2.1.nupkg.sha512"
+    },
+    "Swashbuckle.AspNetCore.SwaggerGen/10.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JYX6i/y0xEtQWH/hZyfcage1/ldwww83ueD/gBc34uSnMwyvRLUsOpYcxlliFFxFbZMrY6t+R9ENqolE7zTEOg==",
+      "path": "swashbuckle.aspnetcore.swaggergen/10.2.1",
+      "hashPath": "swashbuckle.aspnetcore.swaggergen.10.2.1.nupkg.sha512"
+    },
+    "Swashbuckle.AspNetCore.SwaggerUI/10.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vzB8ZAGqXus3fdareJ9GHctaRP9ZL+wW9x8U7s1Y+BWprInFvSg6rpD9VhANNpwXA8fUHqu5Agjl/+hHG1BCQA==",
+      "path": "swashbuckle.aspnetcore.swaggerui/10.2.1",
+      "hashPath": "swashbuckle.aspnetcore.swaggerui.10.2.1.nupkg.sha512"
+    },
+    "System.Configuration.ConfigurationManager/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JlYi9XVvIREURRUlGMr1F6vOFLk7YSY4p1vHo4kX3tQ0AGrjqlRWHDi66ImHhy6qwXBG3BJ6Y1QlYQ+Qz6Xgww==",
+      "path": "system.configuration.configurationmanager/8.0.0",
+      "hashPath": "system.configuration.configurationmanager.8.0.0.nupkg.sha512"
+    },
+    "System.Security.Cryptography.ProtectedData/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+TUFINV2q2ifyXauQXRwy4CiBhqvDEDZeVJU7qfxya4aRYOKzVBpN+4acx25VcPB9ywUN6C0n8drWl110PhZEg==",
+      "path": "system.security.cryptography.protecteddata/8.0.0",
+      "hashPath": "system.security.cryptography.protecteddata.8.0.0.nupkg.sha512"
+    }
+  }
+}
