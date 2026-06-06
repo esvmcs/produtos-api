@@ -163,7 +163,7 @@ public class EditarProdutoServiceTestes
         var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
             _service.AtualizarProdutoAsync(codigoProduto, request));
 
-        Assert.Equal("O valor do produto não pode ser negativo.", exception.Message);
+        Assert.Equal("O valor do produto deve ser maior que zero.", exception.Message);
     }
 
     [Fact]
