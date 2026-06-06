@@ -1,26 +1,23 @@
-﻿using System.Data;
-using Dapper;
+﻿using Dapper;
+using Pyferium.Aplicacao.Produtos.Repositorios;
 using Pyferium.Aplicacao.Produtos.Requests;
 using Pyferium.Aplicacao.Produtos.Responses;
-using Pyferium.Aplicacao.Produtos.Repositorios;
 
 using NHibernateSession = NHibernate.ISession;
 
 namespace Pyferium.Infraestrutura.Repositorios;
 
-public class ProdutoRepositorio : IProdutoRepositorio
+public class ProdutoComandoRepositorio : IProdutoComandoRepositorio
 {
     private const string ProdutoAtivo = "S";
     private const string ProdutoInativo = "N";
 
     private readonly NHibernateSession _session;
 
-    public ProdutoRepositorio(NHibernateSession session)
+    public ProdutoComandoRepositorio(NHibernateSession session)
     {
         _session = session;
     }
-
-    private IDbConnection Connection => _session.Connection;
 
     public async Task<ProdutoCriadoResponse> CriarProdutoAsync(
         string nomeProduto,
@@ -46,7 +43,7 @@ public class ProdutoRepositorio : IProdutoRepositorio
             SELECT LAST_INSERT_ID();
         ";
 
-        var codigoProduto = await Connection.QuerySingleAsync<int>(
+        var codigoProduto = await _session.Connection.QuerySingleAsync<int>(
             sql,
             new
             {
@@ -70,7 +67,7 @@ public class ProdutoRepositorio : IProdutoRepositorio
         int codigoProduto,
         ProdutoRequest request)
     {
-        const string sqlUpdate = @"
+        const string sql = @"
             UPDATE GEN_PRODUTO
             SET 
                 NOMPRODUTO = COALESCE(@nomeProduto, NOMPRODUTO),
@@ -80,8 +77,8 @@ public class ProdutoRepositorio : IProdutoRepositorio
             WHERE CODPRODUTO = @codigoProduto;
         ";
 
-        var linhasAfetadas = await Connection.ExecuteAsync(
-            sqlUpdate,
+        var linhasAfetadas = await _session.Connection.ExecuteAsync(
+            sql,
             new
             {
                 codigoProduto,
@@ -97,102 +94,21 @@ public class ProdutoRepositorio : IProdutoRepositorio
         return await ListarProdutoEditadoAsync(codigoProduto);
     }
 
-    public async Task<IReadOnlyList<ProdutoListagemResponse>> ListarProdutosAsync()
-    {
-        const string sql = @"
-        SELECT 
-            P.CODPRODUTO AS CodigoProduto,
-            P.NOMPRODUTO AS NomeProduto,
-            P.VLRPRODUTO AS ValorProduto,
-            C.CODCATEGORIA AS CodigoCategoria,
-            C.DSCCATEGORIA AS DescricaoCategoria,
-            C.CODNIVEL AS CodigoNivel,
-            P.IDTATIVO AS IdtAtivo
-        FROM GEN_PRODUTO P
-        INNER JOIN GEN_CATEGORIA C 
-            ON C.CODCATEGORIA = P.CODCATEGORIA
-        WHERE P.IDTATIVO = @idtAtivo
-          AND C.IDTATIVO = @idtAtivo
-        ORDER BY P.CODPRODUTO;
-    ";
-
-        var produtos = await Connection.QueryAsync<ProdutoListagemResponse>(
-            sql,
-            new
-            {
-                idtAtivo = "S"
-            });
-
-        return produtos.ToList();
-    }
-
-    public async Task<ProdutoListagemResponse?> ListarPorCodigoAsync(int codigoProduto)
-    {
-        const string sql = @"
-            SELECT 
-                P.CODPRODUTO AS CodigoProduto,
-                P.NOMPRODUTO AS NomeProduto,
-                P.VLRPRODUTO AS ValorProduto,
-                C.CODCATEGORIA AS CodigoCategoria,
-                C.DSCCATEGORIA AS DescricaoCategoria,
-                C.CODNIVEL AS CodigoNivel,
-                P.IDTATIVO AS IdtAtivo
-            FROM GEN_PRODUTO P
-            INNER JOIN GEN_CATEGORIA C 
-                ON C.CODCATEGORIA = P.CODCATEGORIA
-            WHERE P.CODPRODUTO = @codigoProduto;
-        ";
-
-        return await Connection.QuerySingleOrDefaultAsync<ProdutoListagemResponse>(
-            sql,
-            new
-            {
-                codigoProduto
-            });
-    }
-
-    public async Task<bool> ExisteProdutoAtivoComMesmoNomeAsync(
-        string nomeProduto,
-        int codigoCategoria,
-        int? codigoProdutoIgnorar = null)
-    {
-        const string sql = @"
-            SELECT COUNT(1)
-            FROM GEN_PRODUTO
-            WHERE UPPER(TRIM(NOMPRODUTO)) = UPPER(TRIM(@nomeProduto))
-              AND CODCATEGORIA = @codigoCategoria
-              AND IDTATIVO = @idtAtivo
-              AND (@codigoProdutoIgnorar IS NULL OR CODPRODUTO <> @codigoProdutoIgnorar);
-        ";
-
-        var total = await Connection.QuerySingleAsync<int>(
-            sql,
-            new
-            {
-                nomeProduto,
-                codigoCategoria,
-                codigoProdutoIgnorar,
-                idtAtivo = ProdutoAtivo
-            });
-
-        return total > 0;
-    }
-
     public async Task<bool> DeletarProdutoAsync(int codigoProduto)
     {
         const string sql = @"
             UPDATE GEN_PRODUTO
-            SET IDTATIVO = @idtAtivo
+            SET IDTATIVO = @produtoInativo
             WHERE CODPRODUTO = @codigoProduto
               AND IDTATIVO = @produtoAtivo;
         ";
 
-        var linhasAfetadas = await Connection.ExecuteAsync(
+        var linhasAfetadas = await _session.Connection.ExecuteAsync(
             sql,
             new
             {
                 codigoProduto,
-                idtAtivo = ProdutoInativo,
+                produtoInativo = ProdutoInativo,
                 produtoAtivo = ProdutoAtivo
             });
 
@@ -212,7 +128,7 @@ public class ProdutoRepositorio : IProdutoRepositorio
             WHERE CODPRODUTO = @codigoProduto;
         ";
 
-        return await Connection.QuerySingleOrDefaultAsync<ProdutoEditadoResponse>(
+        return await _session.Connection.QuerySingleOrDefaultAsync<ProdutoEditadoResponse>(
             sql,
             new
             {

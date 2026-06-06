@@ -1,4 +1,5 @@
 ﻿using FluentNHibernate.Cfg;
+using Microsoft.Extensions.Configuration;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Connection;

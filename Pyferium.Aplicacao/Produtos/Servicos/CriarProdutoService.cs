@@ -8,14 +8,17 @@ namespace Pyferium.Aplicacao.Produtos.Servicos;
 
 public class CriarProdutoService : ICriarProdutoService
 {
-    private readonly IProdutoRepositorio _produtoRepositorio;
+    private readonly IProdutoComandoRepositorio _produtoComandoRepositorio;
+    private readonly IProdutoConsultaRepositorio _produtoConsultaRepositorio;
     private readonly ICategoriaRepositorio _categoriaRepositorio;
 
     public CriarProdutoService(
-        IProdutoRepositorio produtoRepositorio,
+        IProdutoComandoRepositorio produtoComandoRepositorio,
+        IProdutoConsultaRepositorio produtoConsultaRepositorio,
         ICategoriaRepositorio categoriaRepositorio)
     {
-        _produtoRepositorio = produtoRepositorio;
+        _produtoComandoRepositorio = produtoComandoRepositorio;
+        _produtoConsultaRepositorio = produtoConsultaRepositorio;
         _categoriaRepositorio = categoriaRepositorio;
     }
 
@@ -28,7 +31,7 @@ public class CriarProdutoService : ICriarProdutoService
         await ValidarCategoriaAsync(request.CodigoCategoria);
         await ValidarProdutoDuplicadoAsync(nomeProduto, request.CodigoCategoria);
 
-        return await _produtoRepositorio.CriarProdutoAsync(
+        return await _produtoComandoRepositorio.CriarProdutoAsync(
             nomeProduto,
             request.CodigoCategoria,
             request.ValorProduto);
@@ -59,7 +62,7 @@ public class CriarProdutoService : ICriarProdutoService
 
     private async Task ValidarProdutoDuplicadoAsync(string nomeProduto, int codigoCategoria)
     {
-        var produtoJaExiste = await _produtoRepositorio
+        var produtoJaExiste = await _produtoConsultaRepositorio
             .ExisteProdutoAtivoComMesmoNomeAsync(nomeProduto, codigoCategoria);
 
         if (produtoJaExiste)

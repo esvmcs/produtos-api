@@ -6,18 +6,18 @@ namespace Pyferium.Aplicacao.Produtos.Servicos;
 
 public class DeletarProdutoService : IDeletarProdutoService
 {
-    private readonly IProdutoRepositorio _produtoRepositorio;
+    private readonly IProdutoComandoRepositorio produtoComandoRepositorio;
 
-    public DeletarProdutoService(IProdutoRepositorio produtoRepositorio)
+    public DeletarProdutoService(IProdutoComandoRepositorio produtoComandoRepositorio)
     {
-        _produtoRepositorio = produtoRepositorio;
+        this.produtoComandoRepositorio = produtoComandoRepositorio;
     }
 
     public async Task<bool> DeletarProdutoAsync(int codigoProduto)
     {
         ValidarCodigoProduto(codigoProduto);
 
-        var produtoDeletado = await _produtoRepositorio.DeletarProdutoAsync(codigoProduto);
+        var produtoDeletado = await produtoComandoRepositorio.DeletarProdutoAsync(codigoProduto);
 
         if (!produtoDeletado)
             throw new ProdutoNaoEncontradoException(codigoProduto);

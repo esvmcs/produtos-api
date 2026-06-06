@@ -31,7 +31,7 @@ public class ProdutoMap : ClassMap<Produto>
 
         Map(x => x.IdtAtivo)
             .Column("IDTATIVO")
-            .CustomType<AtivoEnumType>()
+            .CustomType<AtivoEnumTipo>()
             .CustomSqlType("char(1)")
             .Length(1)
             .Not.Nullable();

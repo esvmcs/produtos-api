@@ -1,4 +1,5 @@
-﻿using Pyferium.Aplicacao.Produtos.Servicos;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Pyferium.Aplicacao.Produtos.Servicos;
 using Pyferium.Aplicacao.Produtos.Servicos.Interfaces;
 
 namespace Pyferium.Aplicacao.Configuracoes;

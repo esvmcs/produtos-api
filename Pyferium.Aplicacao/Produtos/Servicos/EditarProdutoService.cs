@@ -14,14 +14,17 @@ public class EditarProdutoService : IEditarProdutoService
     private const string ProdutoInativo = "N";
 
     private readonly ICategoriaRepositorio _categoriaRepositorio;
-    private readonly IProdutoRepositorio _produtoRepositorio;
+    private readonly IProdutoConsultaRepositorio _produtoConsultaRepositorio;
+    private readonly IProdutoComandoRepositorio _produtoComandoRepositorio;
 
     public EditarProdutoService(
         ICategoriaRepositorio categoriaRepositorio,
-        IProdutoRepositorio produtoRepositorio)
+        IProdutoConsultaRepositorio produtoConsultaRepositorio,
+        IProdutoComandoRepositorio produtoComandoRepositorio)
     {
         _categoriaRepositorio = categoriaRepositorio;
-        _produtoRepositorio = produtoRepositorio;
+        _produtoConsultaRepositorio = produtoConsultaRepositorio;
+        _produtoComandoRepositorio = produtoComandoRepositorio;
     }
 
     public async Task<ProdutoEditadoResponse> AtualizarProdutoAsync(
@@ -31,7 +34,7 @@ public class EditarProdutoService : IEditarProdutoService
         ValidarCodigoProduto(codigoProduto);
         ValidarRequest(request);
 
-        var produtoAtual = await _produtoRepositorio.ListarPorCodigoAsync(codigoProduto);
+        var produtoAtual = await _produtoConsultaRepositorio.ListarPorCodigoAsync(codigoProduto);
 
         if (produtoAtual is null)
             throw new ProdutoNaoEncontradoException(codigoProduto);
@@ -51,7 +54,7 @@ public class EditarProdutoService : IEditarProdutoService
             produtoAtual.CodigoCategoria,
             requestNormalizado);
 
-        var produtoEditado = await _produtoRepositorio.AtualizarProdutoAsync(
+        var produtoEditado = await _produtoComandoRepositorio.AtualizarProdutoAsync(
             codigoProduto,
             requestNormalizado);
 
@@ -162,7 +165,7 @@ public class EditarProdutoService : IEditarProdutoService
         if (!alterouNomeOuCategoria)
             return;
 
-        var produtoJaExiste = await _produtoRepositorio
+        var produtoJaExiste = await _produtoConsultaRepositorio
             .ExisteProdutoAtivoComMesmoNomeAsync(
                 nomeFinal,
                 categoriaFinal,

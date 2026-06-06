@@ -7,30 +7,23 @@ namespace Pyferium.Aplicacao.Produtos.Servicos;
 
 public class ListarProdutoService : IListarProdutoService
 {
-    private readonly IProdutoRepositorio _produtoRepositorio;
+    private readonly IProdutoConsultaRepositorio _produtoConsultaRepositorio;
 
-    public ListarProdutoService(IProdutoRepositorio produtoRepositorio)
+    public ListarProdutoService(IProdutoConsultaRepositorio produtoConsultaRepositorio)
     {
-        _produtoRepositorio = produtoRepositorio;
+        _produtoConsultaRepositorio = produtoConsultaRepositorio;
     }
 
     public async Task<IReadOnlyList<ProdutoListagemResponse>> ListarProdutosAsync()
     {
-        var produtos = await _produtoRepositorio.ListarProdutosAsync();
-
-        return produtos.ToList();
+        return await _produtoConsultaRepositorio.ListarProdutosAsync();
     }
 
     public async Task<ProdutoListagemResponse> ListarPorCodigoAsync(int codigoProduto)
     {
         ValidarCodigoProduto(codigoProduto);
 
-        return await ObterProdutoPorCodigoAsync(codigoProduto);
-    }
-
-    private async Task<ProdutoListagemResponse> ObterProdutoPorCodigoAsync(int codigoProduto)
-    {
-        var produto = await _produtoRepositorio.ListarPorCodigoAsync(codigoProduto);
+        var produto = await _produtoConsultaRepositorio.ListarPorCodigoAsync(codigoProduto);
 
         if (produto is null)
             throw new ProdutoNaoEncontradoException(codigoProduto);

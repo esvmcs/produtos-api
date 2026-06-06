@@ -27,7 +27,8 @@ public static class InjecaoDependenciaInfraestrutura
             return sessionFactory.OpenSession();
         });
 
-        services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
+        services.AddScoped<IProdutoConsultaRepositorio, ProdutoConsultaRepositorio>();
+        services.AddScoped<IProdutoComandoRepositorio, ProdutoComandoRepositorio>();
         services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
 
         return services;

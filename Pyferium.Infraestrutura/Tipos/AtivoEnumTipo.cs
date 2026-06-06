@@ -8,7 +8,7 @@ using Pyferium.Dominio.Enumeradores;
 
 namespace Pyferium.Infraestrutura.Tipos;
 
-public class AtivoEnumType : IUserType
+public class AtivoEnumTipo : IUserType
 {
     public SqlType[] SqlTypes => new[]
     {
@@ -21,7 +21,13 @@ public class AtivoEnumType : IUserType
 
     public new bool Equals(object? x, object? y)
     {
-        return x?.Equals(y) ?? y is null;
+        if (ReferenceEquals(x, y))
+            return true;
+
+        if (x is null || y is null)
+            return false;
+
+        return x.Equals(y);
     }
 
     public int GetHashCode(object? x)
@@ -29,29 +35,41 @@ public class AtivoEnumType : IUserType
         return x?.GetHashCode() ?? 0;
     }
 
-    public object? NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
+    public object? NullSafeGet(
+        DbDataReader rs,
+        string[] names,
+        ISessionImplementor session,
+        object owner)
     {
-        var valor = NHibernateUtil.String.NullSafeGet(rs, names[0], session) as string;
+        var valorBanco = NHibernateUtil.String
+            .NullSafeGet(rs, names[0], session) as string;
 
-        valor = valor?.Trim().ToUpperInvariant();
+        valorBanco = valorBanco?.Trim().ToUpperInvariant();
 
-        return valor switch
+        return valorBanco switch
         {
             "S" => AtivoEnum.Ativo,
             "N" => AtivoEnum.Inativo,
             null => null,
-            _ => throw new InvalidOperationException($"Valor inválido para IDTATIVO: {valor}")
+            "" => null,
+            _ => throw new InvalidOperationException(
+                $"Valor inválido para IDTATIVO: {valorBanco}")
         };
     }
 
-    public void NullSafeSet(DbCommand cmd, object? value, int index, ISessionImplementor session)
+    public void NullSafeSet(
+        DbCommand cmd,
+        object? value,
+        int index,
+        ISessionImplementor session)
     {
         var valorBanco = value switch
         {
             AtivoEnum.Ativo => "S",
             AtivoEnum.Inativo => "N",
             null => null,
-            _ => throw new InvalidOperationException($"Valor inválido para AtivoEnum: {value}")
+            _ => throw new InvalidOperationException(
+                $"Valor inválido para {nameof(AtivoEnum)}: {value}")
         };
 
         NHibernateUtil.String.NullSafeSet(cmd, valorBanco, index, session);
