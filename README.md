@@ -213,6 +213,10 @@ Database
 ```text
 produtos-api/
 │
+├── database/
+│   ├── schema.sql
+│   └── seed.sql
+│
 ├── Pyferium.Produtos.API/
 │   ├── Controllers/
 │   │   └── ProdutosController.cs
@@ -452,7 +456,33 @@ Esse padrão preserva o histórico e evita perda definitiva de dados.
 
 ## 🗄️ Banco de dados
 
-A API utiliza banco de dados **MySQL**.
+A API utiliza **MySQL** como banco de dados.
+
+Para facilitar a execução local do projeto, os scripts SQL necessários para criação da base e inserção de dados fictícios estão disponíveis na pasta:
+
+```text
+database/
+```
+
+Arquivos disponíveis:
+
+| Arquivo | Descrição |
+|---|---|
+| `schema.sql` | Cria o banco de dados `mydb_local` e as tabelas necessárias |
+| `seed.sql` | Insere dados fictícios para testes locais |
+
+A ordem recomendada de execução é:
+
+```text
+1. database/schema.sql
+2. database/seed.sql
+```
+
+A base padrão criada pelos scripts é:
+
+```text
+mydb_local
+```
 
 A connection string deve ser configurada no arquivo:
 
@@ -460,17 +490,31 @@ A connection string deve ser configurada no arquivo:
 Pyferium.Produtos.API/appsettings.json
 ```
 
-Exemplo:
+Exemplo de configuração:
 
 ```json
 {
   "ConnectionStrings": {
-    "MySQL": "Server=localhost;Port=3306;Database=pyferium_produtos;Uid=root;Pwd=sua_senha;"
+    "MySQL": "Server=localhost;Port=3306;Database=mydb_local;Uid=root;Pwd=sua_senha;"
   }
 }
 ```
 
-> Ajuste os dados de conexão conforme o ambiente utilizado.
+> Ajuste o usuário, senha e porta conforme o ambiente local utilizado.
+
+### Executando pelo MySQL Workbench
+
+Para executar os scripts pelo **MySQL Workbench**:
+
+1. Abra o arquivo `database/schema.sql`;
+2. Execute o script completo;
+3. Abra o arquivo `database/seed.sql`;
+4. Execute o script completo;
+5. Confirme se o banco `mydb_local` foi criado com as tabelas e dados iniciais.
+
+### Observação
+
+Os dados inseridos pelo arquivo `seed.sql` são fictícios e servem apenas para testes locais.
 
 ---
 
