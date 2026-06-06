@@ -79,33 +79,106 @@ O objetivo é manter uma base simples, clara e extensível para evolução do m�
 
 ## 🏗️ Arquitetura
 
-O projeto segue uma organização em camadas:
+A solução utiliza uma separação em camadas inspirada em Clean Architecture, onde a camada de Aplicação define contratos e regras, enquanto a Infraestrutura implementa os detalhes de persistência. A API atua como camada de entrada HTTP e o Domínio concentra as entidades centrais do projeto.
 
 ```text
-Pyferium.Produtos.API
- ├── Controllers
- └── Configurações da API
-
-Pyferium.Produtos.Aplicacao
- ├── Produtos
- │   ├── Requests
- │   ├── Responses
- │   ├── Servicos
- │   ├── Repositorios
- │   ├── Excecoes
- │   └── Comandos
- │
- └── Categorias
-     └── Repositorios
-
-Pyferium.Produtos.Dominio
- └── Entidades e regras centrais de domínio
-
-Pyferium.Produtos.Infraestrutura
- └── Repositórios e acesso a dados
+Solution 'Pyferium.Produtos'
+│
+├── Pyferium.Produtos.API
+│   ├── Controllers
+│   │   ├── CategoriasController.cs
+│   │   └── ProdutosController.cs
+│   │
+│   ├── Middlewares
+│   │   └── TratamentoExcecaoMiddleware.cs
+│   │
+│   ├── Properties
+│   │   └── launchSettings.json
+│   │
+│   ├── appsettings.json
+│   ├── Program.cs
+│   └── Pyferium.http
+│
+├── Pyferium.Produtos.Aplicacao
+│   ├── Categorias
+│   │   └── Repositorios
+│   │       └── ICategoriaRepositorio.cs
+│   │
+│   ├── Configuracoes
+│   │   └── InjecaoDependenciaAplicacao.cs
+│   │
+│   └── Produtos
+│       ├── Comandos
+│       │   └── EditarProdutoComando.cs
+│       │
+│       ├── Excecoes
+│       │   └── ProdutoNaoEncontradoException.cs
+│       │
+│       ├── Repositorios
+│       │   ├── IProdutoComandoRepositorio.cs
+│       │   └── IProdutoConsultaRepositorio.cs
+│       │
+│       ├── Requests
+│       │   ├── CriarProdutoRequest.cs
+│       │   └── EditarProdutoRequest.cs
+│       │
+│       ├── Responses
+│       │   ├── ProdutoCriadoResponse.cs
+│       │   ├── ProdutoEditadoResponse.cs
+│       │   └── ProdutoListagemResponse.cs
+│       │
+│       └── Servicos
+│           ├── Interfaces
+│           │   ├── ICriarProdutoService.cs
+│           │   ├── IDeletarProdutoService.cs
+│           │   ├── IEditarProdutoService.cs
+│           │   └── IListarProdutoService.cs
+│           │
+│           ├── CriarProdutoService.cs
+│           ├── DeletarProdutoService.cs
+│           ├── EditarProdutoService.cs
+│           └── ListarProdutoService.cs
+│
+├── Pyferium.Produtos.Dominio
+│   ├── Entidades
+│   │   ├── Categoria.cs
+│   │   ├── EntidadeBase.cs
+│   │   └── Produto.cs
+│   │
+│   └── Enumeradores
+│       └── AtivoEnum.cs
+│
+├── Pyferium.Produtos.Infraestrutura
+│   ├── Configuracoes
+│   │   └── InjecaoDependenciaInfraestrutura.cs
+│   │
+│   ├── Dados
+│   │   └── NHibernateSessionFactory.cs
+│   │
+│   ├── Mapeamentos
+│   │   ├── CategoriaMap.cs
+│   │   └── ProdutoMap.cs
+│   │
+│   ├── Repositorios
+│   │   ├── CategoriaRepositorio.cs
+│   │   ├── ProdutoComandoRepositorio.cs
+│   │   └── ProdutoConsultaRepositorio.cs
+│   │
+│   └── Tipos
+│       └── AtivoEnumTipo.cs
+│
+└── Pyferium.Produtos.Aplicacao.Testes
+    └── Produtos
+        └── Servicos
+            ├── CriarProdutoServiceTestes.cs
+            ├── DeletarProdutoServiceTestes.cs
+            ├── EditarProdutoServiceTestes.cs
+            └── ListarProdutoServiceTestes.cs
 ```
 
-### 🔄 Fluxo principal
+---
+
+## 🔄 Fluxo arquitetural
 
 ```text
 HTTP Request
@@ -121,14 +194,17 @@ Repository Implementation
 Database
 ```
 
-### Responsabilidades por camada
+---
 
-| Camada | Responsabilidade |
+## 🧱 Responsabilidades por camada
+
+| Projeto | Responsabilidade |
 |---|---|
-| **API** | Receber requisições HTTP, registrar logs e retornar respostas |
-| **Aplicação** | Concentrar regras de negócio, validações, contratos e comandos |
-| **Domínio** | Representar conceitos centrais do projeto |
-| **Infraestrutura** | Implementar acesso ao banco de dados |
+| **Pyferium.Produtos.API** | Expõe os endpoints HTTP, configura middlewares, Swagger, injeção de dependência e entrada da aplicação |
+| **Pyferium.Produtos.Aplicacao** | Contém regras de aplicação, services, requests, responses, comandos, interfaces de repositórios e exceções específicas |
+| **Pyferium.Produtos.Dominio** | Contém entidades, enums e conceitos centrais do negócio |
+| **Pyferium.Produtos.Infraestrutura** | Implementa acesso a dados, repositórios concretos, mapeamentos NHibernate, sessão e tipos customizados |
+| **Pyferium.Produtos.Aplicacao.Testes** | Contém testes automatizados dos services da camada de aplicação |
 
 ---
 
