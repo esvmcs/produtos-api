@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Pyferium.Produtos.API/Pyferium.Produtos.API.csproj" />
+  <Project Path="Pyferium.Produtos.Aplicacao.Testes/Pyferium.Produtos.Aplicacao.Testes.csproj" />
+  <Project Path="Pyferium.Produtos.Aplicacao/Pyferium.Produtos.Aplicacao.csproj" />
+  <Project Path="Pyferium.Produtos.Dominio/Pyferium.Produtos.Dominio.csproj" />
+  <Project Path="Pyferium.Produtos.Infraestrutura/Pyferium.Produtos.Infraestrutura.csproj" />
+</Solution>
