@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="Pyferium.API/Pyferium.API.csproj" />
+  <Project Path="Pyferium.Aplicacao.Testes/Pyferium.Aplicacao.Testes.csproj" />
   <Project Path="Pyferium.Aplicacao/Pyferium.Aplicacao.csproj" />
   <Project Path="Pyferium.Dominio/Pyferium.Dominio.csproj" />
   <Project Path="Pyferium.Infraestrutura/Pyferium.Infraestrutura.csproj" />

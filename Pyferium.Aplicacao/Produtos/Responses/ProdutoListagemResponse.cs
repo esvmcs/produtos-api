@@ -8,5 +8,6 @@
         public int CodigoCategoria { get; set; }
         public string DescricaoCategoria { get; set; } = string.Empty;
         public string CodigoNivel { get; set; } = string.Empty;
+        public string IdtAtivo { get; set; } = string.Empty;
     }
 }
