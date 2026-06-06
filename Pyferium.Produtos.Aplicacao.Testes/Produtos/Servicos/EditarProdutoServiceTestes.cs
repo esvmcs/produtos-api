@@ -1,5 +1,6 @@
 ﻿using Moq;
 using Pyferium.Produtos.Aplicacao.Categorias.Repositorios;
+using Pyferium.Produtos.Aplicacao.Produtos.Comandos;
 using Pyferium.Produtos.Aplicacao.Produtos.Excecoes;
 using Pyferium.Produtos.Aplicacao.Produtos.Repositorios;
 using Pyferium.Produtos.Aplicacao.Produtos.Requests;
@@ -257,8 +258,14 @@ public class EditarProdutoServiceTestes
             .ReturnsAsync(false);
 
         _produtoComandoRepositorioMock
-            .Setup(x => x.AtualizarProdutoAsync(codigoProduto, It.IsAny<EditarProdutoRequest>()))
-            .ReturnsAsync(responseEsperado);
+    .Setup(x => x.AtualizarProdutoAsync(
+        codigoProduto,
+        It.Is<EditarProdutoComando>(comando =>
+            comando.NomeProduto == "Notebook Gamer" &&
+            comando.CodigoCategoria == 2 &&
+            comando.ValorProduto == 4500 &&
+            comando.IdtAtivo == "S")))
+    .ReturnsAsync(responseEsperado);
 
         var produtoEditado = await _service.AtualizarProdutoAsync(codigoProduto, request);
 

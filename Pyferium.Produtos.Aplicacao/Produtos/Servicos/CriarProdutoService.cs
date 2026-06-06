@@ -45,8 +45,8 @@ public class CriarProdutoService : ICriarProdutoService
         if (request.CodigoCategoria <= 0)
             throw new ArgumentException("O código da categoria deve ser maior que zero.");
 
-        if (request.ValorProduto < 0)
-            throw new ArgumentException("O valor do produto não pode ser negativo.");
+        if (request.ValorProduto <= 0)
+            throw new ArgumentException("O valor do produto deve ser maior que zero.");
 
         ValidarNomeProduto(request.NomeProduto);
     }

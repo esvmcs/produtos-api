@@ -132,8 +132,8 @@ public class EditarProdutoService : IEditarProdutoService
 
     private static void ValidarValorProduto(decimal? valorProduto)
     {
-        if (valorProduto.HasValue && valorProduto.Value < 0)
-            throw new ArgumentException("O valor do produto não pode ser negativo.");
+        if (valorProduto.HasValue && valorProduto.Value <= 0)
+            throw new ArgumentException("O valor do produto deve ser maior que zero.");
     }
 
     private static void ValidarIdtAtivo(string? idtAtivo)

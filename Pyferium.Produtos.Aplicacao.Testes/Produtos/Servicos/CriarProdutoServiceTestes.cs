@@ -64,7 +64,7 @@ public class CriarProdutoServiceTestes
         var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
             _service.CriarProdutoAsync(request));
 
-        Assert.Equal("O valor do produto não pode ser negativo.", exception.Message);
+        Assert.Equal("O valor do produto deve ser maior que zero.", exception.Message);
     }
 
     [Fact]
@@ -146,6 +146,62 @@ public class CriarProdutoServiceTestes
         Assert.Equal(
             "Já existe um produto ativo com o nome 'Notebook' nessa categoria.",
             exception.Message);
+    }
+
+    [Fact]
+    public async Task CriarProdutoAsync_QuandoNomeTiverEspacos_DeveNormalizarNome()
+    {
+        var request = new CriarProdutoRequest
+        {
+            NomeProduto = "  Notebook  ",
+            CodigoCategoria = 1,
+            ValorProduto = 3500
+        };
+
+        _categoriaRepositorioMock
+            .Setup(x => x.VerificarExistenciaCategoriaAsync(request.CodigoCategoria))
+            .ReturnsAsync(true);
+
+        _produtoConsultaRepositorioMock
+            .Setup(x => x.ExisteProdutoAtivoComMesmoNomeAsync(
+                "Notebook",
+                request.CodigoCategoria,
+                null))
+            .ReturnsAsync(false);
+
+        _produtoComandoRepositorioMock
+            .Setup(x => x.CriarProdutoAsync(
+                "Notebook",
+                request.CodigoCategoria,
+                request.ValorProduto))
+            .ReturnsAsync(new ProdutoCriadoResponse
+            {
+                CodigoProduto = 1,
+                NomeProduto = "Notebook",
+                CodigoCategoria = 1,
+                ValorProduto = 3500,
+                IdtAtivo = "S"
+            });
+
+        var produtoCriado = await _service.CriarProdutoAsync(request);
+
+        Assert.Equal("Notebook", produtoCriado.NomeProduto);
+    }
+
+    [Fact]
+    public async Task CriarProdutoAsync_QuandoValorForZero_DeveLancarArgumentException()
+    {
+        var request = new CriarProdutoRequest
+        {
+            NomeProduto = "Notebook",
+            CodigoCategoria = 1,
+            ValorProduto = 0
+        };
+
+        var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
+            _service.CriarProdutoAsync(request));
+
+        Assert.Equal("O valor do produto deve ser maior que zero.", exception.Message);
     }
 
     [Fact]
