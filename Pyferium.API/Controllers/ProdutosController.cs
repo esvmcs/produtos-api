@@ -30,11 +30,19 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CriarProdutoAsync([FromBody] CriarProdutoRequest request)
+    public async Task<IActionResult> CriarProdutoAsync([FromBody] CriarProdutoRequest? request)
     {
+        if (request is null)
+        {
+            return BadRequest(new
+            {
+                Erro = "Os dados do produto são obrigatórios."
+            });
+        }
+
         _logger.LogInformation(
             "Iniciando criação de produto. Nome: {NomeProduto}",
-            request?.NomeProduto);
+            request.NomeProduto);
 
         try
         {
@@ -53,7 +61,7 @@ public class ProdutosController : ControllerBase
         {
             _logger.LogWarning(
                 "Falha ao criar produto. Nome: {NomeProduto}. Erro: {Erro}",
-                request?.NomeProduto,
+                request.NomeProduto,
                 ex.Message);
 
             return BadRequest(new
